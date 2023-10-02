@@ -4,10 +4,18 @@ const seed = require('../db/seeds/seed')
 const db = require('../db/connection')
 const app = require('../app')
 
+const endpoints = require('../endpoints.json')
+
 beforeEach(() => seed(data))    
 afterAll(() => db.end())
 
-
+describe('General Errors', () => {
+    it('should return a 404 if not found', () => {
+        request(app).get('/api/notfound').expect(404).then((res) => {
+            expect(res.body.message).toBe('Not Found')
+        })
+    })
+});
 
 describe('getTopics', () => {
     it('should return a 200 status code', () => {
@@ -23,4 +31,16 @@ describe('getTopics', () => {
             });
         })
     });
+});
+
+describe('getAPI', () => {
+    it('should return a 200 status code', () => {
+        return request(app).get('/api').expect(200)
+    });
+    it('should return a description of all the available endpoints', () => {
+        const expected = endpoints
+        return request(app).get('/api').then((res) => {
+            expect(res.body).toEqual(expected)
+        })
+    })
 });

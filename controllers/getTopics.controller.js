@@ -1,4 +1,3 @@
-
 const getAllTopics = require("../models/getAllTopics.model")
 
 function getTopics (req, res, next) {
