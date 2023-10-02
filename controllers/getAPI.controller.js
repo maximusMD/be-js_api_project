@@ -1,7 +1,8 @@
 const endpoints = require('../endpoints.json')
 
 function getAPI (req, res, next) {
-    res.status(200).send({endpoints});
+    console.log(endpoints);
+    return res.status(200).json(endpoints);
 }
 
 module.exports = getAPI
