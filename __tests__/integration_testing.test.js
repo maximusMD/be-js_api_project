@@ -40,7 +40,6 @@ describe('getAPI', () => {
     it('should return a description of all the available endpoints', () => {
         const expected = endpoints
         return request(app).get('/api').then((res) => {
-            console.log(res.body);
             expect(res.body).toEqual(expected)
         })
     });
