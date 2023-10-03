@@ -3,6 +3,7 @@ const request = require('supertest')
 const seed = require('../db/seeds/seed')
 const db = require('../db/connection')
 const app = require('../app')
+require('jest-sorted')
 
 const endpoints = require('../endpoints.json')
 
@@ -92,7 +93,13 @@ describe('getArticles', () => {
                 expect(article).hasOwnProperty('votes')
                 expect(article).hasOwnProperty('article_img_url')
                 expect(article).hasOwnProperty('comment_count')
+                expect(article.article_id).toBe(res.body.articles[index].article_id)
             });
+        })
+    });
+    it('should be sorted by created_at in descending order', () => {
+        return request(app).get("/api/articles").then((res) => {
+            expect(res.body.articles).toBeSortedBy('created_at', { descending: true})
         })
     });
     it('should not contain a body property in the articles', () => {
@@ -102,4 +109,24 @@ describe('getArticles', () => {
             }
         })
     });
+});
+
+describe('getComments', () => {
+    it('should return a 200 status code', () => {
+        return request(app).get("/api/articles/1/comments").expect(200)
+    });
+    it('should return the articles (an array of objects with the correct properties) ', () => {
+        return request(app).get("/api/articles/1/comments").then((res) => {
+            expect(Array.isArray(res.body.comments)).toBe(true)
+            expect(res.body.comments).toHaveLength(11)
+            res.body.comments.forEach((comment, index) => {
+                expect(typeof res.body.comments[index]).toBe('object')
+                expect(comment).hasOwnProperty('author')
+                expect(comment).hasOwnProperty('article_id')
+                expect(comment).hasOwnProperty('created_at')
+                expect(comment).hasOwnProperty('votes')
+                expect(comment).hasOwnProperty('body')
+            });
+        })
+    }); 
 });
