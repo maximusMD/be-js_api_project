@@ -11,9 +11,6 @@ function getAllComments (article_id) {
     .then(({ rows }) => {
         return rows
     })
-    .catch((err) => {
-        next(err)
-    })
 }
 
 module.exports = getAllComments
