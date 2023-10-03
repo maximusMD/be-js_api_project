@@ -103,3 +103,23 @@ describe('getArticles', () => {
         })
     });
 });
+
+describe('getComments', () => {
+    it('should return a 200 status code', () => {
+        return request(app).get("/api/articles/1/comments").expect(200)
+    });
+    it('should return the articles (an array of objects with the correct properties) ', () => {
+        return request(app).get("/api/articles/1/comments").then((res) => {
+            expect(Array.isArray(res.body.comments)).toBe(true)
+            expect(res.body.comments).toHaveLength(11)
+            res.body.comments.forEach((comment, index) => {
+                expect(typeof res.body.comments[index]).toBe('object')
+                expect(comment).hasOwnProperty('author')
+                expect(comment).hasOwnProperty('article_id')
+                expect(comment).hasOwnProperty('created_at')
+                expect(comment).hasOwnProperty('votes')
+                expect(comment).hasOwnProperty('body')
+            });
+        })
+    }); 
+});
