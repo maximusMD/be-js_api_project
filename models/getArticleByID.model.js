@@ -8,6 +8,9 @@ function articleByID(id) {
     ;`
     return db.query(queryString, [id])
     .then(({ rows }) => {
+        if (rows.length === 0) {
+            return Promise.reject({status: 404, message: 'Not Found'})
+        }
         return rows[0]
     })
 }

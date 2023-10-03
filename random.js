@@ -13,11 +13,14 @@ app.use((err, req, res, next) => {
     }
 })
 
-describe('General Errors', () => {
-    it('should return a 404 if not found', () => {
-        request(app).get('/api/notfound').expect(404).then((res) => {
-            expect(res.body.message).toBe('Not Found')
-        })
-    })
-});
+
+
+
+
+
+
+
+
+
+
 

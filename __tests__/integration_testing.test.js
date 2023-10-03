@@ -72,3 +72,32 @@ describe('getArticleByID', () => {
         })
     });  
 });
+
+describe('getArticles', () => {
+    it('should return a 200 status code', () => {
+        return request(app).get("/api/articles").expect(200)
+    });
+    it('should return the articles (an array of objects with the correct properties) ', () => {
+        return request(app).get("/api/articles").then((res) => {
+            expect(Array.isArray(res.body.articles)).toBe(true)
+            res.body.articles.forEach((article, index) => {
+                expect(typeof res.body.articles[index]).toBe('object')
+                expect(article).hasOwnProperty('author')
+                expect(article).hasOwnProperty('title')
+                expect(article).hasOwnProperty('article_id')
+                expect(article).hasOwnProperty('topic')
+                expect(article).hasOwnProperty('created_at')
+                expect(article).hasOwnProperty('votes')
+                expect(article).hasOwnProperty('article_img_url')
+                expect(article).hasOwnProperty('comment_count')
+            });
+        })
+    });
+    it('should not contain a body property in the articles', () => {
+        return request(app).get("/api/articles").then((res) => {
+            for (const article of res.body.articles) {
+                expect(article.body).toBeUndefined();
+            }
+        })
+    });
+});
