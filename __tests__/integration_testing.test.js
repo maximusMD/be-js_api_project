@@ -44,3 +44,31 @@ describe('getAPI', () => {
         })
     })
 });
+
+describe('getArticleByID', () => {
+    it('should return a 200 status code', () => {
+        return request(app).get("/api/articles/1").expect(200)
+        
+    });
+    it('should return the correct article', () => {
+        const expected = {
+        author: 'butter_bridge',
+        title: 'Living in the shadow of a great man',
+        article_id: 1,
+        body: 'I find this existence challenging',
+        topic: 'mitch',
+        created_at: '2020-07-09T20:11:00.000Z',
+        votes: 100,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+        }
+        return request(app).get("/api/articles/1").expect(200).then((res) => {
+            expect(res.body.article).toEqual(expected)
+        })
+    });
+    it('should return a 404 status code if no such article', () => {
+        return request(app).get("/api/articles/5000").expect(404).then((res) => {
+            expect(res.status).toBe(404)
+            expect(res.body.message).toBe('Not Found')
+        })
+    });  
+});
