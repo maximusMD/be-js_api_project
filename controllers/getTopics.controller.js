@@ -1,4 +1,4 @@
-const getAllTopics = require("../models/getAllTopics.model")
+const getAllTopics = require("../models/getTopics.model")
 
 function getTopics (req, res, next) {
     getAllTopics().then((result) => {
