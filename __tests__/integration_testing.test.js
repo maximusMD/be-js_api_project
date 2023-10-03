@@ -24,6 +24,7 @@ describe('getTopics', () => {
     it('should return the topics (an array of objects with the correct properties) ', () => {
         return request(app).get("/api/topics").then((res) => {
             expect(Array.isArray(res.body.topics)).toBe(true)
+            expect(res.body.topics).toHaveLength(3)
             res.body.topics.forEach((topic, index) => {
                 expect(typeof res.body.topics[index]).toBe('object')
                 expect(topic).hasOwnProperty('slug')
@@ -80,6 +81,7 @@ describe('getArticles', () => {
     it('should return the articles (an array of objects with the correct properties) ', () => {
         return request(app).get("/api/articles").then((res) => {
             expect(Array.isArray(res.body.articles)).toBe(true)
+            expect(res.body.articles).toHaveLength(13)
             res.body.articles.forEach((article, index) => {
                 expect(typeof res.body.articles[index]).toBe('object')
                 expect(article).hasOwnProperty('author')
