@@ -162,10 +162,10 @@ describe('postComments', () => {
             expect(res.body.message).toBe('Bad Request')
         })
     })
-    it('should return a 400 status code if bad request, i.e. username doesn\'t exist', () => {
+    it('should return a 404 status code if bad request, i.e. username doesn\'t exist', () => {
         const comment = {username: 'a', body: 'a'}
-        return request(app).post(`/api/articles/1/comments`).send(comment).expect(400).then((res) => {
-            expect(res.body.message).toBe('Bad Request')
+        return request(app).post(`/api/articles/1/comments`).send(comment).expect(404).then((res) => {
+            expect(res.body.message).toBe('Not Found')
         })
     })
     it('should return a 404 status code if no such article', () => {
