@@ -109,6 +109,33 @@ describe('getArticles', () => {
             }
         })
     });
+    it('should return filtered articles when a valid topic query is provided', async () => {
+        return request(app).get('/api/articles?topic=mitch').expect(200).then((res) => {
+            expect(Array.isArray(res.body.articles)).toBe(true)
+            expect(res.body.articles).toHaveLength(12)
+            res.body.articles.forEach((article, index) => {
+                expect(typeof res.body.articles[index]).toBe('object')
+                expect(article).toHaveProperty('topic', 'mitch')
+                expect(article).toHaveProperty('author')
+                expect(article).toHaveProperty('title')
+                expect(article).toHaveProperty('article_id')
+                expect(article).toHaveProperty('created_at')
+                expect(article).toHaveProperty('votes')
+                expect(article).toHaveProperty('article_img_url')
+                expect(article).toHaveProperty('comment_count')
+            })
+        })
+    });
+    it('should return a 404 status code if topic does not exist', () => {
+        return request(app).get('/api/articles?topic=invalidTopic').expect(404).then((res) => {
+            expect(res.body.message).toBe('Not Found')
+        })
+    });
+    it('should return a 400 status code if topic is empty', () => {
+        return request(app).get('/api/articles?topic=').expect(400).then((res) => {
+            expect(res.body.message).toBe('Bad Request')
+        })
+    });
 });
 
 describe('getComments', () => {
