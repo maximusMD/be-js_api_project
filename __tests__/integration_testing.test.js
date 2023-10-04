@@ -207,3 +207,21 @@ describe('patchArticles', () => {
         })
     })
 });
+
+describe('deleteComments', () => {
+    it('should return a 204 status code', () => {
+        return request(app).delete('/api/comments/1').expect(204)
+    });
+    it('should return a 404 status code if the comment does not exist', () => {
+        return request(app).delete('/api/comments/5000').expect(404)
+    });
+    it('should return a 400 status code for an invalid comment_id', () => {
+        return request(app).delete('/api/comments/a').expect(400)
+    });
+});
+
+describe('getUsers', () => {
+    it('should return a 200 status code', () => {
+        
+    });
+});

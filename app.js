@@ -5,10 +5,12 @@ const getAPI = require('./controllers/getAPI.controller')
 const getArticleByID = require('./controllers/getArticleByID.controller')
 const getArticles = require('./controllers/getArticles.controller')
 const getComments = require('./controllers/getComments.controller')
+const getUsers = require('./controllers/getUsers.controller')
 
 const postComments = require('./controllers/postComments.controller')
 const patchArticles = require('./controllers/patchArticles.controller')
 
+const deleteComments = require('./controllers/deleteComments.controller')
 
 const app = express()
 
@@ -19,9 +21,12 @@ app.get('/api', getAPI)
 app.get('/api/articles/:article_id', getArticleByID)
 app.get('/api/articles', getArticles)
 app.get('/api/articles/:article_id/comments', getComments)
+app.get('/api/users', getUsers)
 
 app.post('/api/articles/:article_id/comments', postComments)
 app.patch('/api/articles/:article_id', patchArticles)
+
+app.delete('/api/comments/:comment_id', deleteComments)
 
 app.use((err, req, res, next) => {
     if (err.status){
