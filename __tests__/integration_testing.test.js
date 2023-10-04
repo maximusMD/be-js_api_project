@@ -221,7 +221,16 @@ describe('deleteComments', () => {
 });
 
 describe('getUsers', () => {
-    it('should return a 200 status code', () => {
-        
+    it('should return the users (an array of objects with the correct properties) ', () => {
+        return request(app).get("/api/users").then((res) => {
+            expect(Array.isArray(res.body.users)).toBe(true)
+            expect(res.body.users).toHaveLength(4)
+            res.body.users.forEach((user, index) => {
+                expect(typeof res.body.users[index]).toBe('object')
+                expect(user).hasOwnProperty('username')
+                expect(user).hasOwnProperty('name')
+                expect(user).hasOwnProperty('avatar_url')
+            });
+        })
     });
 });
