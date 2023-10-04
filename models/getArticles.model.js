@@ -10,6 +10,9 @@ function getAllArticles() {
     `
     return db.query(queryString)
     .then((articles) => {
+        if (articles.rows.length === 0) {
+            return Promise.reject({status: 404, message: 'Not Found'})
+        }
         return articles.rows
     })
 }
