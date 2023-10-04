@@ -7,6 +7,7 @@ const getArticles = require('./controllers/getArticles.controller')
 const getComments = require('./controllers/getComments.controller')
 
 const postComments = require('./controllers/postComments.controller')
+const patchArticles = require('./controllers/patchArticles.controller')
 
 
 const app = express()
@@ -20,6 +21,7 @@ app.get('/api/articles', getArticles)
 app.get('/api/articles/:article_id/comments', getComments)
 
 app.post('/api/articles/:article_id/comments', postComments)
+app.patch('/api/articles/:article_id', patchArticles)
 
 app.use((err, req, res, next) => {
     if (err.status){
