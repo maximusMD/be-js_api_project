@@ -132,30 +132,38 @@ describe('getComments', () => {
 });
 
 describe('postComments', () => {
-    it('should return a 201 status code', () => {
-        const comment = {username: 'butter_bridge', body: 'a'}
-        return request(app).post(`/api/articles/1/comments`).send(comment).expect(201)
-    });
-    it('should return the posted comment with the username and body properties', () => {
-        const comment = {username: 'butter_bridge', body: 'a'}
-        const expected = {username: 'butter_bridge', body: 'a'}
-        return request(app).post(`/api/articles/1/comments`).send(comment).expect(201).then((res) => {
-            expect(comment).toEqual(expected)
-            expect(comment).toHaveProperty('username')
-            expect(comment).toHaveProperty('body')
-        })
-    });
-    it('should not return the created_at, votes, comment_id or article_id properties', () => {
+
+    it('should return a 201 status code and the posted comment with the username, body, and article_id properties', () => {
         const comment = {username: 'butter_bridge', body: 'a'}
         return request(app).post(`/api/articles/1/comments`).send(comment).expect(201).then((res) => {
-            expect(comment.created_at).toBeUndefined()
-            expect(comment.votes).toBeUndefined()
-            expect(comment.comment_id).toBeUndefined()
-            expect(comment.article_id).toBeUndefined()
+            expect(res.body.comment).toHaveProperty('author', 'butter_bridge')
+            expect(res.body.comment).toHaveProperty('body', 'a')
+            expect(res.body.comment).toHaveProperty('article_id', 1)
         })
     });
-    it('should return a 400 status code if bad request', () => {
+    it('should return a 201 status code and the posted comment with only the correct properties', () => {
+        const comment = {username: 'butter_bridge', body: 'a', nonsense: 1}
+        return request(app).post(`/api/articles/1/comments`).send(comment).expect(201).then((res) => {
+            expect(res.body.comment).toHaveProperty('author', 'butter_bridge')
+            expect(res.body.comment).toHaveProperty('body', 'a')
+            expect(res.body.comment).toHaveProperty('article_id', 1)
+            expect(res.body.comment.nonsense).toBeUndefined()
+        })
+    });
+    it('should return a 400 status code if bad request, i.e. a missing required property', () => {
         const comment = {username: 'butter_bridge'}
+        return request(app).post(`/api/articles/1/comments`).send(comment).expect(400).then((res) => {
+            expect(res.body.message).toBe('Bad Request')
+        })
+    })
+    it('should return a 400 status code if bad request, i.e. an invalid username', () => {
+        const comment = {username: 1, body: 'a'}
+        return request(app).post(`/api/articles/1/comments`).send(comment).expect(400).then((res) => {
+            expect(res.body.message).toBe('Bad Request')
+        })
+    })
+    it('should return a 400 status code if bad request, i.e. username doesn\'t exist', () => {
+        const comment = {username: 'a', body: 'a'}
         return request(app).post(`/api/articles/1/comments`).send(comment).expect(400).then((res) => {
             expect(res.body.message).toBe('Bad Request')
         })
@@ -164,6 +172,12 @@ describe('postComments', () => {
         const comment = {username: 'butter_bridge'}
         return request(app).post(`/api/articles/5000/comments`).send(comment).expect(404).then((res) => {
             expect(res.body.message).toBe('Not Found')
+        })
+    })
+    it('should return a 400 status code if invalid article', () => {
+        const comment = {username: 'butter_bridge'}
+        return request(app).post(`/api/articles/a/comments`).send(comment).expect(400).then((res) => {
+            expect(res.body.message).toBe('Bad Request')
         })
     })
 });
