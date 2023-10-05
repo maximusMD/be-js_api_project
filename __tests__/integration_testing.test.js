@@ -126,9 +126,9 @@ describe('getArticles', () => {
             })
         })
     });
-    it('should return a 404 status code if no articles for specified topic', () => {
-        return request(app).get('/api/articles?topic=paper').expect(404).then((res) => {
-            expect(res.body.message).toBe('Not Found')
+    it('should return a 200 status code if no articles for specified topic', () => {
+        return request(app).get('/api/articles?topic=paper').expect(200).then((res) => {
+            expect(res.body.message).toBe('No Articles for specified topic')
         })
     });
     it('should return a 404 status code if topic does not exist', () => {
@@ -235,6 +235,12 @@ describe('patchArticles', () => {
     it('should return a 400 status code if inc_votes is not a number', () => {
         const inc_votes = 'a'
         return request(app).patch('/api/articles/1').send({ inc_votes: inc_votes }).expect(400).then((res) => {
+            expect(res.body.message).toBe('Bad Request')
+        })
+    })
+    it('should return a 400 status code if invalid article path', () => {
+        const inc_votes = 5
+        return request(app).patch('/api/articles/cheese').send({ inc_votes: inc_votes }).expect(400).then((res) => {
             expect(res.body.message).toBe('Bad Request')
         })
     })

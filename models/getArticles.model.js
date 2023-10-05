@@ -1,4 +1,6 @@
 const db = require('../db/connection')
+const testTopics = require('../db/data/test-data/topics')
+const devTopics = require('../db/data/development-data/topics')
 
 function getAllArticles(topic) {
     let queryString = `
@@ -11,6 +13,9 @@ function getAllArticles(topic) {
     if (topic){
         queryString += ' WHERE articles.topic = $1 '
         topicQuery.push(topic)
+        if (!testTopics.some(testTopic => testTopic.slug === topic) && !devTopics.includes(topic)) {
+            return Promise.reject({ status: 404, message: 'Not Found' });
+        }
     }
     queryString += 
     ` GROUP BY articles.author, articles.title, articles.article_id
@@ -21,10 +26,11 @@ function getAllArticles(topic) {
         res.status(400).send({ message: 'Bad Request' })
     }
 
+
     return db.query(queryString, topicQuery)
     .then((articles) => {
         if (articles.rows.length === 0) {
-            return Promise.reject({status: 404, message: 'Not Found'})
+            return Promise.reject({status: 200, message: 'No Articles for specified topic'})
         }
         return articles.rows
     })
