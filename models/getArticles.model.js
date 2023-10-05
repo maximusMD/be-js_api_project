@@ -13,7 +13,7 @@ function getAllArticles(topic) {
     if (topic){
         queryString += ' WHERE articles.topic = $1 '
         topicQuery.push(topic)
-        if (!testTopics.some(testTopic => testTopic.slug === topic) && !devTopics.includes(topic)) {
+        if (!testTopics.some(testTopic => testTopic.slug === topic) && !devTopics.some(devTopic => devTopic.slug === topic)) {
             return Promise.reject({ status: 404, message: 'Not Found' });
         }
     }
