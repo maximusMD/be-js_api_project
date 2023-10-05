@@ -8,7 +8,6 @@
     "seed-prod": "NODE_ENV=production npm run seed",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
-    "playground": "PGDATABASE=nc_news_test psql -f playground.sql > playground.txt",
     "test": "jest",
     "prepare": "husky install"
   },
