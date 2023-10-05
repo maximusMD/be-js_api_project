@@ -65,7 +65,15 @@ describe('getArticleByID', () => {
         article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
         }
         return request(app).get("/api/articles/1").expect(200).then((res) => {
-            expect(res.body.article).toEqual(expected)
+            expect(res.body.article).toHaveProperty('author', 'butter_bridge')
+            expect(res.body.article).toHaveProperty('title', 'Living in the shadow of a great man')
+            expect(res.body.article).toHaveProperty('body', 'I find this existence challenging')
+            expect(res.body.article).toHaveProperty('created_at')
+            expect(res.body.article).toHaveProperty('article_id', 1)
+            expect(res.body.article).toHaveProperty('topic', 'mitch')
+            expect(res.body.article).toHaveProperty('votes', 100)
+            expect(res.body.article).toHaveProperty('article_img_url', 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700')
+            expect(res.body.article).toHaveProperty('comment_count', '11')
         })
     });
     it('should return a 404 status code if no such article', () => {
@@ -219,7 +227,9 @@ describe('patchArticles', () => {
         const inc_votes = 5
         request(app).patch('/api/articles/1').send({ inc_votes: inc_votes }).expect(200).then((res) => {
             expect(res.body.article).toHaveProperty('author', 'butter_bridge')
+            expect(res.body.article).toHaveProperty('title', 'Living in the shadow of a great man')
             expect(res.body.article).toHaveProperty('body', 'I find this existence challenging')
+            expect(res.body.article).toHaveProperty('created_at')
             expect(res.body.article).toHaveProperty('article_id', 1)
             expect(res.body.article).toHaveProperty('topic', 'mitch')
             expect(res.body.article).toHaveProperty('votes', 105)
