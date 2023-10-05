@@ -58,6 +58,7 @@ describe('getArticleByID', () => {
         title: 'Living in the shadow of a great man',
         article_id: 1,
         body: 'I find this existence challenging',
+        comment_count: '11',
         topic: 'mitch',
         created_at: '2020-07-09T20:11:00.000Z',
         votes: 100,
