@@ -126,6 +126,11 @@ describe('getArticles', () => {
             })
         })
     });
+    it('should return a 404 status code if no articles for specified topic', () => {
+        return request(app).get('/api/articles?topic=paper').expect(404).then((res) => {
+            expect(res.body.message).toBe('Not Found')
+        })
+    });
     it('should return a 404 status code if topic does not exist', () => {
         return request(app).get('/api/articles?topic=invalidTopic').expect(404).then((res) => {
             expect(res.body.message).toBe('Not Found')

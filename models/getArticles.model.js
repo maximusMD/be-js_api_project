@@ -16,6 +16,11 @@ function getAllArticles(topic) {
     ` GROUP BY articles.author, articles.title, articles.article_id
     ORDER BY articles.created_at DESC;
     `
+    
+    if (topic === '') {
+        res.status(400).send({ message: 'Bad Request' })
+    }
+
     return db.query(queryString, topicQuery)
     .then((articles) => {
         if (articles.rows.length === 0) {
