@@ -109,7 +109,7 @@ describe('getArticles', () => {
             }
         })
     });
-    it('should return filtered articles when a valid topic query is provided', async () => {
+    it('should return filtered articles when a valid topic query is provided', () => {
         return request(app).get('/api/articles?topic=mitch').expect(200).then((res) => {
             expect(Array.isArray(res.body.articles)).toBe(true)
             expect(res.body.articles).toHaveLength(12)
