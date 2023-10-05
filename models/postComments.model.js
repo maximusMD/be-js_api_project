@@ -7,6 +7,7 @@ function createComments (username, body, article_id) {
     VALUES ($1, $2, $3)
     RETURNING *;
     `
+    
     return db.query(queryString, [username, body, parsedID])
     .then(({ rows }) => {
         return rows[0];
