@@ -2,7 +2,8 @@ const db = require('../db/connection')
 
 function articleByID(id) {
     const queryString = `
-    SELECT author, title, article_id, body, topic, created_at, votes, article_img_url
+    SELECT author, title, article_id, body, topic, created_at, votes, article_img_url,
+    (SELECT COUNT(comment_id) FROM comments WHERE article_id = $1) AS comment_count
     FROM articles
     WHERE article_id = $1;
     ;`
