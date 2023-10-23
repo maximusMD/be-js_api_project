@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 
 const getTopics = require('./controllers/getTopics.controller')
 const getAPI = require('./controllers/getAPI.controller')
@@ -13,6 +14,8 @@ const patchArticles = require('./controllers/patchArticles.controller')
 const deleteComments = require('./controllers/deleteComments.controller')
 
 const app = express()
+
+app.use(cors())
 
 app.use(express.json())
 
