@@ -21,7 +21,7 @@ function getAllArticles(topic, sort, order) {
     queryString += ` GROUP BY articles.author, articles.title, articles.article_id`
 
     if (sort === "comment_count") {
-        queryString += ` ORDER BY articles.comment_count ${order === "asc" ? "ASC" : "DESC"}`
+        queryString += ` ORDER BY COUNT(comments.comment_id) ${order === "asc" ? "ASC" : "DESC"}`
     }
     else if (sort === "votes") {
         queryString += ` ORDER BY articles.votes ${order === "asc" ? "ASC" : "DESC"}`
