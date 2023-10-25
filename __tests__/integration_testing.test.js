@@ -137,7 +137,7 @@ describe('getArticles', () => {
     });
     it('should return a 200 status code if no articles for specified topic', () => {
         return request(app).get('/api/articles?topic=paper').expect(200).then((res) => {
-            expect(res.body.message).toBe('No Articles for specified topic')
+            expect(res.body.message).toBe('No Articles for the specified topic')
         })
     });
     it('should return a 404 status code if topic does not exist', () => {
