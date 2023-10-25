@@ -14,29 +14,32 @@ function getAllArticles(topic, sort, order) {
         queryString += ' WHERE articles.topic = $1 '
         topicQuery.push(topic)
         if (!testTopics.some(testTopic => testTopic.slug === topic) && !devTopics.some(devTopic => devTopic.slug === topic)) {
-            return Promise.reject({ status: 404, message: 'Not Found' });
+            return Promise.reject({ status: 404, message: 'Not Found' })
         }
     }
 
-    queryString += ` GROUP BY articles.author, articles.title, articles.article_id`;
+    queryString += ` GROUP BY articles.author, articles.title, articles.article_id`
 
-    if (sort === "comment_count" || sort === "votes") {
-        queryString += ` ORDER BY articles.${sort} ${order === "asc" ? "ASC" : "DESC"}`;
+    if (sort === "comment_count") {
+        queryString += ` ORDER BY articles.comment_count ${order === "asc" ? "ASC" : "DESC"}`
+    }
+    else if (sort === "comment_count") {
+        queryString += ` ORDER BY articles.votes ${order === "asc" ? "ASC" : "DESC"}`
     } else {
-        queryString += ` ORDER BY articles.created_at ${order === "asc" ? "ASC" : "DESC"}`;
+        queryString += ` ORDER BY articles.created_at ${order === "asc" ? "ASC" : "DESC"}`
     }
 
     if (topic === '') {
-        res.status(400).send({ message: 'Bad Request' });
+        res.status(400).send({ message: 'Bad Request' })
     }
 
     return db.query(queryString, topicQuery)
         .then((articles) => {
             if (articles.rows.length === 0) {
-                return Promise.reject({ status: 200, message: 'No Articles for the specified topic' });
+                return Promise.reject({ status: 200, message: 'No Articles for the specified topic' })
             }
-            return articles.rows;
-        });
+            return articles.rows
+        })
 }
 
 module.exports = getAllArticles
