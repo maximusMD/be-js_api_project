@@ -23,7 +23,7 @@ function getAllArticles(topic, sort, order) {
     if (sort === "comment_count") {
         queryString += ` ORDER BY articles.comment_count ${order === "asc" ? "ASC" : "DESC"}`
     }
-    else if (sort === "comment_count") {
+    else if (sort === "votes") {
         queryString += ` ORDER BY articles.votes ${order === "asc" ? "ASC" : "DESC"}`
     } else {
         queryString += ` ORDER BY articles.created_at ${order === "asc" ? "ASC" : "DESC"}`
